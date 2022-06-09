@@ -1,10 +1,71 @@
-.photo_item {
-  object-fit: cover;
-  width: 230px;
-  height: 230px;
+:root {
+  font-size: 10px;
 }
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Open Sans", Arial, sans-serif;
+  min-height: 100vh;
+  background-color: #fafafa;
+  color: #262626;
+  padding-bottom: 3rem;
+}
+
+#upload_section {
+  padding-bottom: 3rem;
+}
+
+img {
+  display: block;
+}
+
+.photo_item {
+  width: 29rem;
+  height: 29rem;
+  object-fit: cover;
+}
+
+/* .photo_item {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+} */
 
 .preview-images img {
   width: auto;
   height: 230px;
+}
+
+.container {
+  max-width: 93rem;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -1rem -1rem;
+  padding-bottom: 3rem;
+}
+
+.photo_item_div {
+  position: relative;
+  flex: 1 0 22rem;
+  /* margin: 1rem; */
+  color: #fff;
+  cursor: pointer;
+}
+
+@supports (display: grid) {
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+    gap: 2rem;
+  }
 }
