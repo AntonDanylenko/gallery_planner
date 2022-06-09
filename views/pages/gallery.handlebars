@@ -1,0 +1,66 @@
+<h3>Gallery</h3>
+
+{{#if errorExists}}
+  <p id="error">{{error}}</p>
+{{/if}}
+
+<div>
+  <form method="POST" action="/upload" enctype="multipart/form-data">
+
+    {{!-- <label id="photoImage" for="photoImage">Link to Photo Image:</label><br>
+    <input type="text" id="photoImage" name="photoImage"><br><br> --}}
+
+    <input
+      type="file"
+      name="file"
+      id="input-files"
+      class="form-control-file border"
+    />
+
+    <button type="submit">Submit</button>
+  </form>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <div class="preview-images"></div>
+  </div>
+</div>
+
+<div>
+  {{#if photos}}
+    <ul>
+      {{#each photos}}
+        <li>
+          <div class="photo_item_div">
+            <img class="photo_item" src="{{this.url}}" alt="{{this.name}}">
+          </div>
+        </li>
+      {{/each}}
+    </ul>
+  {{else}}
+    <p>No Photos Available</p>
+  {{/if}}
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+  $(document).ready(function() {
+    let imagesPreview = function(input, placeToInsertImagePreview) {
+      if (input.files) {
+        let filesAmount = input.files.length;
+        for (i = 0; i < filesAmount; i++) {
+          let reader = new FileReader();
+          reader.onload = function(event) {
+            $($.parseHTML("<img>"))
+              .attr("src", event.target.result)
+              .appendTo(placeToInsertImagePreview);
+          };
+          reader.readAsDataURL(input.files[i]);
+        }
+      }
+    };
+    $("#input-files").on("change", function() {
+      imagesPreview(this, "div.preview-images");
+    });
+  });
+</script>

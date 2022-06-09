@@ -1,0 +1,10 @@
+.photo_item {
+  object-fit: cover;
+  width: 230px;
+  height: 230px;
+}
+
+.preview-images img {
+  width: auto;
+  height: 230px;
+}
