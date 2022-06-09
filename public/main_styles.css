@@ -41,6 +41,25 @@ img {
   height: 230px;
 }
 
+.fa-window-close {
+  position: relative;
+  left: 28.2rem;
+  top: -26.5rem;
+  width: 2rem;
+  height: 2rem;
+  font-size: 2rem;
+  margin: -2rem;
+  display: none;
+}
+
+.photo_item:hover + .fa-window-close {
+  display: block;
+}
+
+.fa-window-close:hover {
+  display:block;
+}
+
 .container {
   max-width: 93rem;
   margin: 3rem auto;

@@ -3,8 +3,6 @@ const express = require("express");
 const router = express.Router();
 const data = require('../data');
 const photoData = data.photos;
-// const xss = require('xss');
-// const baseUrl = "http://localhost:3000/files/";
 
 // GET /
 router.get('/', async (req, res) => {

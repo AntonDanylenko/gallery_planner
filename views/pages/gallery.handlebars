@@ -37,11 +37,13 @@
           class="photo_item_div" 
           id="{{this.name}}"
           draggable="true" ondragstart="drag(event)"
-          ondrop="drop(event)" ondragover="allowDrop(event)">
+          ondrop="drop(event)" ondragover="allowDrop(event)"
+        >
           <img 
             class="photo_item"
             src="{{this.url}}" alt="{{this.name}}"
           >
+          <i class="far fa-window-close"></i>
         </div>
       {{/each}}
     {{else}}
