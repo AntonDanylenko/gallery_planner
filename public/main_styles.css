@@ -16,9 +16,9 @@ body {
   padding-bottom: 3rem;
 }
 
-#upload_section {
+/* #upload_section {
   padding-bottom: 3rem;
-}
+} */
 
 img {
   display: block;
@@ -43,7 +43,7 @@ img {
 
 .container {
   max-width: 93rem;
-  margin: 0 auto;
+  margin: 3rem auto;
   padding: 0 2rem;
 }
 

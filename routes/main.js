@@ -27,45 +27,24 @@ router.get('/', async (req, res) => {
 router.post('/upload', async (req,res) => {
   try {
     await upload(req, res);
-    console.log(req.file);
-    if (req.file == undefined) {
-      return res.send({
-        message: "You must select a file.",
-      });
+    // console.log(req.files);
+    if (req.files.length <= 0) {
+      return res
+        .status(400)
+        .send({ message: "You must select at least 1 file." });
     }
-    // return res.send({
-    //   message: "File has been uploaded.",
-    // });
-    res.redirect("/")
+    res.redirect("/");
   } catch (error) {
     console.log(error);
-    return res.send({
-      message: "Error when trying upload image: ${error}",
+    if (error.code === "LIMIT_UNEXPECTED_FILE") {
+      return res.status(400).send({
+        message: "Too many files to upload.",
+      });
+    }
+    return res.status(500).send({
+      message: `Error when trying upload many files: ${error}`,
     });
   }
-
-  // if (!req.body.photoImage){
-  //   res.status(404);
-  //   res.render('pages/gallery', {error: "No image url provided", errorExists: true});
-  // }
-  // if (req.body.photoImage!='string' || req.body.photoImage.trim().length==0){
-  //   res.status(404);
-  //   res.render('pages/gallery', {error: "Image url cannot be all spaces", errorExists: true});
-  // }
-  // try {
-  //   // var today = new Date();
-  //   // var dd = String(today.getDate()).padStart(2, '0');
-  //   // var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-  //   // var yyyy = today.getFullYear();
-  //   // today = mm + '/' + dd + '/' + yyyy;
-  //   const create = await photoData.createPhoto(xss(req.body.photoImage));
-  //   if (create.photoInserted) {
-  //     res.redirect('/');
-  //   }
-  // } catch (e) {
-  //   res.status(404);
-  //   res.render('pages/gallery', {error: e, errorExists: true});
-  // }
 });
 
 router.get("/files/:name", async (req, res) => {
