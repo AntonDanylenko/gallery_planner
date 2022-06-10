@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 const data = require('../data');
 const photoData = data.photos;
-const { ObjectId } = require('mongodb');
+// const { ObjectId } = require('mongodb');
 
 router.get('/', async (req, res) => {
   try {
@@ -27,6 +27,7 @@ router.post('/upload', async (req,res) => {
     if (req.files.length <= 0) {
       return res.status(400).render('pages/gallery', {photos: null, error: "You must select at least 1 file.", errorExists: true});
     }
+    await photoData.addIndexes();
     return res.status(200).redirect("/");
   } catch (e) {
     console.log(e);
@@ -56,10 +57,9 @@ router.get("/files/:name", async (req, res) => {
 });
 
 router.delete("/files/:name", async (req, res) => {
-  console.log("Deleting photo with filename: " + req.params.name);
+  // console.log("Deleting photo with filename: " + req.params.name);
   try {
-    const response = await photoData.removePhoto(req.params.name);
-    console.log(response);
+    await photoData.removePhoto(req.params.name);
     return res.status(200).render('pages/gallery');
   } catch (e) {
     return res.status(404).render('pages/gallery', {photos: null, error: e, errorExists: true});

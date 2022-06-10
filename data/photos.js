@@ -60,7 +60,46 @@ module.exports = {
     //   throw new Error('Could not delete all photo chunks');
     // }
     // console.log("Success");
-    return photoName + ' has been successfully deleted!';
+    console.log('DELETED ' + photoName);
+    return;
+  },
+
+  // Add indexes to all photos that don't have them
+  async addIndexes(){
+    const photoFilesCollection = await photo_files();
+    const photoList = await photoFilesCollection.find({}).toArray();
+    if (photoList){
+      let start_index = 0;
+      if (await photoFilesCollection.countDocuments({index: {$exists: true}}) > 0){
+        const indexedPhotos = await photoFilesCollection.find({index: {$exists: true}});
+        // console.log(indexedPhotos.toArray());
+        const sortedPhotos = await indexedPhotos.sort({"index": -1}).toArray();
+        // console.log(sortedPhotos);
+        const maxPhoto = sortedPhotos[0];
+        // console.log("maxPhoto: " + maxPhoto);
+        start_index = maxPhoto["index"] + 1;
+        // console.log("start_index indexed: " + start_index);
+      }
+      // else {
+      //   console.log("start_index unindexed: " + start_index);
+      // }
+      const unindexedPhotos = await photoFilesCollection.find({index: {$exists: false}});
+      const sortUnindexed = await unindexedPhotos.sort({"uploadDate": 1}).toArray();
+      // console.log(sortUnindexed);
+      for (photo of sortUnindexed){
+        photo["index"] = start_index;
+        const updatedInfo = await photoFilesCollection.updateOne(
+          { _id: photo["_id"] },
+          { $set: photo }
+        );
+        if (updatedInfo.modifiedCount === 0) {
+          throw new Error('Could not update photo index successfully');
+        }
+        console.log("ADDED " + photo["filename"]);
+        start_index++;
+      }
+      return;
+    }
   }
 
 }
