@@ -23,6 +23,7 @@ const getDatabase = () => {
 
 /* Now, you can list your collections here: */
 module.exports = {
-  photos: getCollectionFn("photos.files"),
+  photo_files: getCollectionFn("photos.files"),
+  photo_chunks: getCollectionFn("photos.chunks"),
   database: getDatabase()
 };
