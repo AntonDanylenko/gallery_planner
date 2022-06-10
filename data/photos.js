@@ -1,9 +1,9 @@
-const mongoCollections = require('../config/mongoCollections');
+const mongoCollections = require("../config/mongoCollections");
 const photo_files = mongoCollections.photo_files;
 const photo_chunks = mongoCollections.photo_chunks;
 const db = mongoCollections.database;
 const GridFSBucket = require("mongodb").GridFSBucket;
-const { ObjectId } = require('mongodb');
+const { ObjectId } = require("mongodb");
 const baseUrl = "http://localhost:3000/files/";
 const drag_drop = require("../public/js/drag_drop");
 
@@ -23,7 +23,7 @@ module.exports = {
       });
       return fileInfos;
     }
-    throw new Error('Could not get all photos');
+    throw new Error("Could not get all photos");
   },
 
   // Create bucket
@@ -40,7 +40,7 @@ module.exports = {
     const photoFilesCollection = await photo_files();
     const photo = await photoFilesCollection.findOne({ filename: name });
     if (photo === null){
-      throw new Error('No photo with that filename');
+      throw new Error("No photo with that filename");
     }
     const photoName = photo["filename"];
     const id = photo["_id"].toString();
@@ -48,7 +48,7 @@ module.exports = {
     // console.log("id: " + id);
     const filesDeletionInfo = await photoFilesCollection.deleteOne({ _id: ObjectId(id) });
     if (filesDeletionInfo.deletedCount === 0) {
-      throw new Error('Could not delete photo file');
+      throw new Error("Could not delete photo file");
     }
     const photoChunksCollection = await photo_chunks();
     // const chunks = await photoChunksCollection.find({ files_id: ObjectId(id) });
@@ -58,14 +58,14 @@ module.exports = {
     const chunksDeletionInfo = await photoChunksCollection.deleteMany({ files_id: ObjectId(id) });
     // console.log("deletion count: " + chunksDeletionInfo.deletedCount);
     // if (chunksDeletionInfo.deletedCount !== numChunks) {
-    //   throw new Error('Could not delete all photo chunks');
+    //   throw new Error("Could not delete all photo chunks");
     // }
     // console.log("Success");
-    console.log('DELETED ' + photoName);
+    console.log("DELETED " + photoName);
     return;
   },
 
-  // Add indexes to all photos that don't have them
+  // Add indexes to all photos that don"t have them
   async addIndexes(){
     const photoFilesCollection = await photo_files();
     const photoList = await photoFilesCollection.find({}).toArray();
@@ -94,7 +94,7 @@ module.exports = {
           { $set: photo }
         );
         if (updatedInfo.modifiedCount === 0) {
-          throw new Error('Could not update photo index successfully');
+          throw new Error("Could not update photo index successfully");
         }
         console.log("ADDED " + photo["filename"]);
         start_index++;
@@ -115,7 +115,7 @@ module.exports = {
           { $set: photo }
         );
         if (updatedInfo.modifiedCount === 0) {
-          throw new Error('Could not update photo index successfully');
+          throw new Error("Could not update photo index successfully");
         }
         console.log("UPDATED INDEX of " + photo["filename"]);
       }

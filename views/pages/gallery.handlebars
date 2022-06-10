@@ -25,11 +25,21 @@
   <div id="preview-images"></div>
 </div>
 
+<div id="gap_width">
+  <form>
+    <p>Select layout format:</p>
+    <input type="radio" class="radio" name="gap_width" value="phone" checked="checked">
+    <label for="phone">Phone</label><br>
+    <input type="radio" class="radio" name="gap_width" value="computer">
+    <label for="computer">Computer</label><br>
+  </form>
+</div>
+
 <div id="save_div">
   <button id="save_button">Save Layout</button>
 </div>
 
-<div class="container">
+<div id="container">
   <div id="gallery">
     {{#if photos}}
       {{#each photos}}

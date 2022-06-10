@@ -21,7 +21,7 @@ h3 {
   font-size: 30px;
 }
 
-#upload_section {
+#upload_section, #gap_width {
   margin: 1rem;
 }
 
@@ -50,6 +50,24 @@ h3 {
   border-radius: 2px;
   border-color: green;
   margin: 1rem;
+}
+
+#container {
+  max-width: 91rem;
+  margin: 3rem auto;
+  padding: 0 2rem;
+}
+
+#gallery {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -1rem -1rem;
+  padding-bottom: 3rem;
+}
+
+#gallery p {
+  text-align: center;
+  font-size: 2rem;
 }
 
 img {
@@ -81,19 +99,6 @@ img {
   display:block;
 }
 
-.container {
-  max-width: 93rem;
-  margin: 3rem auto;
-  padding: 0 2rem;
-}
-
-#gallery {
-  display: flex;
-  flex-wrap: wrap;
-  margin: -1rem -1rem;
-  padding-bottom: 3rem;
-}
-
 .photo_item_div {
   position: relative;
   flex: 1 0 22rem;
@@ -106,6 +111,6 @@ img {
   #gallery {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
-    gap: 2rem;
+    gap: 1rem;
   }
 }

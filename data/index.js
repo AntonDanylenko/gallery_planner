@@ -1,4 +1,4 @@
-const photoData = require('./photos');
+const photoData = require("./photos");
 
 module.exports = {
   photos: photoData

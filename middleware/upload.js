@@ -1,7 +1,7 @@
 const util = require("util");
 const multer = require("multer");
 const { GridFsStorage } = require("multer-gridfs-storage");
-const settings = require('../config/settings');
+const settings = require("../config/settings");
 const mongoConfig = settings.mongoConfig;
 
 var storage = new GridFsStorage({
