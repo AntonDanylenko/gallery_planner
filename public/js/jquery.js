@@ -15,7 +15,7 @@
       }
     };
     $("#input-files").on("change", function() {
-      imagesPreview(this, "div.preview-images");
+      imagesPreview(this, "div#preview-images");
     });
   });
 })(window.jQuery);
