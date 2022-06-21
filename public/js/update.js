@@ -109,3 +109,23 @@ const radios = document.getElementsByClassName("radio");
 for (radio of radios) {
   radio.addEventListener("click", gapWidth);
 }
+
+// OPEN SIDEBAR
+
+function openSidebar(e) {
+  e.preventDefault();
+  document.getElementById("sidebar").style.width = "250px";
+  document.getElementById("main").style.marginLeft = "250px";
+}
+
+function closeSidebar(e) {
+  e.preventDefault();
+  document.getElementById("sidebar").style.width = "0";
+  document.getElementById("main").style.marginLeft= "0";
+}
+
+const sidebar_open = document.getElementById("sidebar_open");
+sidebar_open.addEventListener("click", openSidebar);
+
+const sidebar_close = document.getElementById("sidebar_close");
+sidebar_close.addEventListener("click", closeSidebar);

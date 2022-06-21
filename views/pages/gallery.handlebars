@@ -1,64 +1,91 @@
-<h3>Gallery Planner</h3>
+<div id="sidebar" class="sidebar">
+  <a id="sidebar_close">x</a> {{!--  href="javascript:void(0)"  --}}
+  <div id="sidebar_contents">
+    <p>Hold photos here temporarily:</p>
+    <div id="temp_photos">
+      {{!-- {{#if temp_photos}}
+        {{#each temp_photos}}
+          <div 
+            class="photo_item_div" 
+            id="{{this.name}}"
+            draggable="true" ondragstart="drag(event)"
+            ondrop="drop(event)" ondragover="allowDrop(event)"
+          >
+            <img 
+              class="photo_item"
+              src="{{this.url}}" alt="{{this.name}}"
+            >
+            <i class="far fa-window-close"></i>
+          </div>
+        {{/each}}
+      {{else}}
+        <p id="temp_photos_alt">Drag photos here</p>
+      {{/if}} --}}
+    </div>
+  </div>
+</div>
 
-{{#if errorExists}}
-  <p id="error">{{error}}</p>
-{{/if}}
+<div id="main">
+  <h3>Gallery Planner</h3>
 
-<div id="upload_section">
-  <div id="upload_form">
-    <form method="POST" action="/upload" enctype="multipart/form-data">
+  {{#if errorExists}}
+    <p id="error">{{error}}</p>
+  {{/if}}
 
-      {{!-- <label id="photoImage" for="photoImage">Link to Photo Image:</label><br>
-      <input type="text" id="photoImage" name="photoImage"><br><br> --}}
+  <div id="upload_section">
+    <div id="upload_form">
+      <form method="POST" action="/upload" enctype="multipart/form-data">
 
-      <input
-        type="file"
-        name="file"
-        multiple
-        id="input-files"
-        class="form-control-file border"
-      />
+        <input
+          type="file"
+          name="file"
+          multiple
+          id="input-files"
+          class="form-control-file border"
+        />
 
-      <button type="submit">Submit</button>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+    <div id="preview-images"></div>
+  </div>
+
+  <div id="gap_width">
+    <form>
+      <p>Select layout format:</p>
+      <input type="radio" class="radio" name="gap_width" value="phone" checked="checked">
+      <label for="phone">Phone</label><br>
+      <input type="radio" class="radio" name="gap_width" value="computer">
+      <label for="computer">Computer</label><br>
     </form>
   </div>
-  <div id="preview-images"></div>
-</div>
 
-<div id="gap_width">
-  <form>
-    <p>Select layout format:</p>
-    <input type="radio" class="radio" name="gap_width" value="phone" checked="checked">
-    <label for="phone">Phone</label><br>
-    <input type="radio" class="radio" name="gap_width" value="computer">
-    <label for="computer">Computer</label><br>
-  </form>
-</div>
+  <div id="buttons_div">
+    <button id="sidebar_open" onclick="openNav()">☰ Open Sidebar</button>
+    <button id="save_button">Save Layout</button>
+  </div>
 
-<div id="save_div">
-  <button id="save_button">Save Layout</button>
-</div>
-
-<div id="container">
-  <div id="gallery">
-    {{#if photos}}
-      {{#each photos}}
-        <div 
-          class="photo_item_div" 
-          id="{{this.name}}"
-          draggable="true" ondragstart="drag(event)"
-          ondrop="drop(event)" ondragover="allowDrop(event)"
-        >
-          <img 
-            class="photo_item"
-            src="{{this.url}}" alt="{{this.name}}"
+  <div id="container">
+    <div id="gallery">
+      {{#if photos}}
+        {{#each photos}}
+          <div 
+            class="photo_item_div" 
+            id="{{this.name}}"
+            draggable="true" ondragstart="drag(event)"
+            ondrop="drop(event)" ondragover="allowDrop(event)"
           >
-          <i class="far fa-window-close"></i>
-        </div>
-      {{/each}}
-    {{else}}
-      <p>No Photos Available</p>
-    {{/if}}
+            <img 
+              class="photo_item"
+              src="{{this.url}}" alt="{{this.name}}"
+            >
+            <i class="far fa-window-close"></i>
+          </div>
+        {{/each}}
+      {{else}}
+        <p>No Photos Available</p>
+      {{/if}}
+    </div>
   </div>
 </div>
 
