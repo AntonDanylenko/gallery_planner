@@ -2,19 +2,24 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Gallery Planner</title>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Gallery Planner</title>
 
-    <link rel="icon" type="image/x-icon" href="public/favicon/favicon.ico">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="/public/main_styles.css">
+  <link rel="icon" type="image/x-icon" href="public/favicon/favicon.ico">
+  <script src="/public/js/on_load.js"></script>
+  {{!-- <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> --}}
+  <link rel="stylesheet" href="/public/main_styles.css">
 </head>
 
 <body>
-    <main>
-        {{{body}}}
-    </main>
+  <div id="loadingText">
+    <div>Please Wait ...</div>
+    <div id="loader"></div>
+  </div>
+  <main id="main">
+    {{{body}}}
+  </main>
 </body>
 
 </html>
