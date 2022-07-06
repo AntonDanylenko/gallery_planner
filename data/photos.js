@@ -135,8 +135,55 @@ module.exports = {
     }
   },
 
-  async updateGallery(filenames){
+  async updateGallery(filenames, temp_filenames){
     const photoFilesCollection = await photo_files();
+    const photoTempCollection = await photo_temp();
+
+    // Insert all photos that have been moved from sidebar to gallery to the gallery collection db
+    const tempPhotoList = await photoTempCollection.find({}).toArray();
+    for (temp_photo of tempPhotoList){
+      if (filenames.indexOf(temp_photo["filename"]) != -1){
+        const insertInfo = await photoFilesCollection.insertOne(temp_photo);
+        if (!insertInfo.acknowledged || !insertInfo.insertedId) {
+          throw new Error('Could not add temp photo to photoFilesCollection');
+        }
+      }
+    }
+    
+    // Insert all photos that have been moved from gallery to sidebar to the sidebar collection db
+    // Delete all photos that have been moved from gallery to sidebar from the gallery collection db
+    const photoList = await photoFilesCollection.find({}).toArray();
+    for (photo of photoList){
+      if (temp_filenames.indexOf(photo["filename"]) != -1){
+        const insertInfo = await photoTempCollection.insertOne(photo);
+        if (!insertInfo.acknowledged || !insertInfo.insertedId) {
+          throw new Error('Could not add photo to photoTempCollection');
+        }
+        const deleteInfo = await photoFilesCollection.deleteOne({ _id: ObjectId(photo["_id"]) });
+        if (deleteInfo.deletedCount === 0) {
+          throw new Error("Could not delete photo file from photoFilesCollection");
+        }
+      }
+    }
+
+    // Delete all photos that have been moved from sidebar to gallery from the sidebar collection db
+    for (temp_photo of tempPhotoList){
+      if (filenames.indexOf(temp_photo["filename"]) != -1){
+        const deleteInfo = await photoTempCollection.deleteOne({ _id: ObjectId(temp_photo["_id"]) });
+        if (deleteInfo.deletedCount === 0) {
+          throw new Error("Could not delete temp photo file from photoTempCollection");
+        }
+      }
+    }
+
+    // console.log("filenames: " + filenames);
+    // const photoListNew = await photoFilesCollection.find({}).toArray();
+    // console.log("photoList: " + photoListNew);
+    // console.log("temp_filenames: " + temp_filenames);
+    // const tempPhotoListNew = await photoTempCollection.find({}).toArray();
+    // console.log("tempPhotoList: " + tempPhotoListNew);
+
+    // Update indeces of gallery images in database to the order of current layout
     let index = filenames.length - 1;
     for (filename of filenames){
       const photo = await photoFilesCollection.findOne({filename: filename});
@@ -153,28 +200,25 @@ module.exports = {
       }
       index--;
     }
+
+    // Update indeces of sidebar images in database to the order of current layout
+    let temp_index = temp_filenames.length - 1;
+    for (temp_filename of temp_filenames){
+      const temp_photo = await photoTempCollection.findOne({filename: temp_filename});
+      if (temp_photo["index"]!=temp_index){
+        temp_photo["index"] = temp_index;
+        const updatedInfo = await photoTempCollection.updateOne(
+          { _id: temp_photo["_id"] },
+          { $set: temp_photo }
+        );
+        if (updatedInfo.modifiedCount === 0) {
+          throw new Error("Could not update temp photo index successfully");
+        }
+        console.log("UPDATED INDEX of " + temp_photo["filename"]);
+      }
+      temp_index--;
+    }
+
     return;
-  },
-
-  // async updateTemp(temp_filenames){
-  //   const photoTempCollection = await photo_temp();
-  //   let index = filenames.length - 1;
-  //   for (filename of filenames){
-  //     const photo = await photoTempCollection.findOne({filename: filename});
-  //     if (photo["index"]!=index){
-  //       photo["index"] = index;
-  //       const updatedInfo = await photoTempCollection.updateOne(
-  //         { _id: photo["_id"] },
-  //         { $set: photo }
-  //       );
-  //       if (updatedInfo.modifiedCount === 0) {
-  //         throw new Error("Could not update photo index successfully");
-  //       }
-  //       console.log("UPDATED INDEX of " + photo["filename"]);
-  //     }
-  //     index--;
-  //   }
-  //   return;
-  // }
-
+  }
 }

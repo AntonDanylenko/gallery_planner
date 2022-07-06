@@ -104,14 +104,15 @@ var save_layout = function(e) {
   // console.log("Got temp_filenames: " + temp_filenames);
 
   fetch("/layout", {
-    method: "POST", 
+    method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
     },
-    body: {
-      "gallery_photos": JSON.stringify(filenames),
-      "temp_photos": JSON.stringify(temp_filenames)
-    },
+    body: JSON.stringify({
+      "gallery_photos": filenames,
+      "temp_photos": temp_filenames
+    }),
   });
 }
 
