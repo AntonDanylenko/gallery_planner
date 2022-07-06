@@ -86,18 +86,32 @@ const save_button = document.getElementById("save_button");
 var save_layout = function(e) {
   e.preventDefault();
   // console.log("Save button clicked");
+
+  // Get ordered list of gallery photos
   const photoList = document.getElementsByClassName("photo_item_div");
   const filenames = [];
   for (element of photoList){
     filenames.push(element.id);
   }
   // console.log("Got filenames: " + filenames);
+
+  // Get list of sidebar photos
+  const tempPhotoList = document.getElementsByClassName("temp_photo_item_div");
+  const temp_filenames = [];
+  for (element of tempPhotoList){
+    temp_filenames.push(element.id);
+  }
+  // console.log("Got temp_filenames: " + temp_filenames);
+
   fetch("/layout", {
     method: "POST", 
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(filenames),
+    body: {
+      "gallery_photos": JSON.stringify(filenames),
+      "temp_photos": JSON.stringify(temp_filenames)
+    },
   });
 }
 

@@ -75,9 +75,12 @@ router.delete("/files/:name", async (req, res) => {
 });
 
 router.post("/layout", async (req, res) => {
-  const filenames = req.body;
+  const filenames = req.body.gallery_photos;
+  const temp_filenames = req.body.temp_photos;
   // console.log(filenames);
-  await photoData.updateIndexes(filenames);
+  // console.log(temp_filenames);
+  await photoData.updateGallery(filenames);
+  // await photoData.updateTemp(temp_filenames);
   return res.status(200).render("pages/gallery");
 });
 

@@ -135,7 +135,7 @@ module.exports = {
     }
   },
 
-  async updateIndexes(filenames){
+  async updateGallery(filenames){
     const photoFilesCollection = await photo_files();
     let index = filenames.length - 1;
     for (filename of filenames){
@@ -154,6 +154,27 @@ module.exports = {
       index--;
     }
     return;
-  }
+  },
+
+  // async updateTemp(temp_filenames){
+  //   const photoTempCollection = await photo_temp();
+  //   let index = filenames.length - 1;
+  //   for (filename of filenames){
+  //     const photo = await photoTempCollection.findOne({filename: filename});
+  //     if (photo["index"]!=index){
+  //       photo["index"] = index;
+  //       const updatedInfo = await photoTempCollection.updateOne(
+  //         { _id: photo["_id"] },
+  //         { $set: photo }
+  //       );
+  //       if (updatedInfo.modifiedCount === 0) {
+  //         throw new Error("Could not update photo index successfully");
+  //       }
+  //       console.log("UPDATED INDEX of " + photo["filename"]);
+  //     }
+  //     index--;
+  //   }
+  //   return;
+  // }
 
 }
