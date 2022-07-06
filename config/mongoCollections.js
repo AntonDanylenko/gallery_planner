@@ -1,7 +1,6 @@
 const dbConnection = require("./mongoConnection");
 
 /* This will allow you to have one reference to each collection per app */
-/* Feel free to copy and paste this */
 const getCollectionFn = (collection) => {
   let _col = undefined;
 
@@ -25,5 +24,6 @@ const getDatabase = () => {
 module.exports = {
   photo_files: getCollectionFn("photos.files"),
   photo_chunks: getCollectionFn("photos.chunks"),
+  photo_temp: getCollectionFn("photos.temp"),
   database: getDatabase()
 };

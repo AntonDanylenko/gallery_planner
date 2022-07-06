@@ -1,15 +1,15 @@
 const mongoCollections = require("../config/mongoCollections");
 const photo_files = mongoCollections.photo_files;
 const photo_chunks = mongoCollections.photo_chunks;
+const photo_temp = mongoCollections.photo_temp;
 const db = mongoCollections.database;
 const GridFSBucket = require("mongodb").GridFSBucket;
 const { ObjectId } = require("mongodb");
 const baseUrl = "http://localhost:3000/files/";
-const drag_drop = require("../public/js/drag_drop");
 
 module.exports = {
 
-  // Returns all photo urls
+  // Returns all photos
   async getAllPhotos(){
     const photoFilesCollection = await photo_files();
     const photoList = await photoFilesCollection.find({}).sort({"index": -1});
@@ -26,6 +26,23 @@ module.exports = {
     throw new Error("Could not get all photos");
   },
 
+  // Returns all temp photos
+  async getAllTempPhotos(){
+    const photoTempCollection = await photo_temp();
+    const photoList = await photoTempCollection.find({}); //.sort({"tempIndex": -1});
+    if (photoList!=[]){
+      let fileInfos = [];
+      await photoList.forEach((doc) => {
+        fileInfos.push({
+          name: doc.filename,
+          url: baseUrl + doc.filename,
+        });
+      });
+      return fileInfos;
+    }
+    throw new Error("Could not get all temp photos");
+  },
+
   // Create bucket
   async createBucket(){
     const database = await db();
@@ -37,16 +54,31 @@ module.exports = {
 
   // Remove a photo
   async removePhoto(name){
+    var photoName = "";
+    var id = "";
+    var filesDeletionInfo;
     const photoFilesCollection = await photo_files();
     const photo = await photoFilesCollection.findOne({ filename: name });
     if (photo === null){
-      throw new Error("No photo with that filename");
+      const photoTempCollection = await photo_temp();
+      const temp_photo = await photoTempCollection.findOne({ filename: name });
+      if (temp_photo === null){
+        throw new Error("No photo or temp photo with that filename");
+      }
+      else {
+        photoName = temp_photo["filename"];
+        id = temp_photo["_id"].toString();
+        filesDeletionInfo = await photoTempCollection.deleteOne({ _id: ObjectId(id) });
+      }
     }
-    const photoName = photo["filename"];
-    const id = photo["_id"].toString();
+    else {
+      photoName = photo["filename"];
+      id = photo["_id"].toString();
+      filesDeletionInfo = await photoFilesCollection.deleteOne({ _id: ObjectId(id) });
+    }
     // console.log("photoName: " + photoName);
     // console.log("id: " + id);
-    const filesDeletionInfo = await photoFilesCollection.deleteOne({ _id: ObjectId(id) });
+    // const filesDeletionInfo = await photoFilesCollection.deleteOne({ _id: ObjectId(id) });
     if (filesDeletionInfo.deletedCount === 0) {
       throw new Error("Could not delete photo file");
     }

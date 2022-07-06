@@ -3,24 +3,28 @@
   <div id="sidebar_contents">
     <p>Hold photos here temporarily:</p>
     <div id="temp_photos">
-      {{!-- {{#if temp_photos}}
+      {{#if temp_photos}}
         {{#each temp_photos}}
           <div 
-            class="photo_item_div" 
+            class="temp_photo_item_div" 
             id="{{this.name}}"
             draggable="true" ondragstart="drag(event)"
             ondrop="drop(event)" ondragover="allowDrop(event)"
           >
             <img 
-              class="photo_item"
+              class="temp_photo_item"
               src="{{this.url}}" alt="{{this.name}}"
             >
-            <i class="far fa-window-close"></i>
+            <p class="temp_window_close">X</p>
           </div>
         {{/each}}
       {{else}}
-        <p id="temp_photos_alt">Drag photos here</p>
-      {{/if}} --}}
+        <p id="temp_no_photos"
+           ondrop="drop(event)" 
+           ondragover="allowDrop(event)">
+           Drag photos here
+        </p>
+      {{/if}}
     </div>
   </div>
 </div>
@@ -79,11 +83,15 @@
               class="photo_item"
               src="{{this.url}}" alt="{{this.name}}"
             >
-            <i class="far fa-window-close"></i>
+            <p class="window_close">X</p>
           </div>
         {{/each}}
       {{else}}
-        <p>No Photos Available</p>
+        <p id="no_photos"
+           ondrop="drop(event)" 
+           ondragover="allowDrop(event)">
+           No Photos Available
+        </p>
       {{/if}}
     </div>
   </div>
@@ -91,5 +99,4 @@
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="/public/js/jquery.js"></script>
-<script src="/public/js/drag_drop.js"></script>
 <script src="/public/js/update.js"></script>
