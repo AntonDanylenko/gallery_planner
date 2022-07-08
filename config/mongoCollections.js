@@ -24,6 +24,6 @@ const getDatabase = () => {
 module.exports = {
   photo_files: getCollectionFn("photos.files"),
   photo_chunks: getCollectionFn("photos.chunks"),
-  photo_temp: getCollectionFn("photos.temp"),
+  photo_infos: getCollectionFn("photoInfos"),
   database: getDatabase()
 };

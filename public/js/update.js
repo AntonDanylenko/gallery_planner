@@ -33,11 +33,11 @@ function drop(ev) {
   }
   // console.log("reference_element: " + reference_element);
 
-  // Parent is either the full grid div or the temp sidebar gallery div
+  // Parent is either the gallery div or the sidebar div
   var parent = reference_element.parentElement;
   // console.log("parent.id: " + parent.id);
 
-  // Change class names of photo elements if its moved between gallery and temp
+  // Change class names of photo elements if its moved between gallery and sidebar
   if (parent.id=="gallery"){
     moving_element.className = "photo_item_div";
     var img = moving_element.getElementsByTagName("img")[0];
@@ -46,11 +46,11 @@ function drop(ev) {
     p.className = "window_close";
   }
   else {
-    moving_element.className = "temp_photo_item_div";
+    moving_element.className = "sidebar_photo_item_div";
     var img = moving_element.getElementsByTagName("img")[0];
-    img.className = "temp_photo_item";
+    img.className = "sidebar_photo_item";
     var p = moving_element.getElementsByTagName("P")[0];
-    p.className = "temp_window_close";
+    p.className = "sidebar_window_close";
   }
 
   // Insert moving_element before reference_element
@@ -69,13 +69,13 @@ function drop(ev) {
     no_photos.id = "no_photos";
     document.getElementById("gallery").appendChild(no_photos);
   }
-  if(document.getElementById("temp_photos").childElementCount === 0){
+  if(document.getElementById("sidebar_photos").childElementCount === 0){
     let no_photos = document.createElement("p");
     no_photos.addEventListener("drop", drop);
     no_photos.addEventListener("dragover", allowDrop);
     no_photos.innerHTML = "Drag photos here";
-    no_photos.id = "temp_no_photos";
-    document.getElementById("temp_photos").appendChild(no_photos);
+    no_photos.id = "sidebar_no_photos";
+    document.getElementById("sidebar_photos").appendChild(no_photos);
   }
 }
 
@@ -96,12 +96,12 @@ var save_layout = function(e) {
   // console.log("Got filenames: " + filenames);
 
   // Get list of sidebar photos
-  const tempPhotoList = document.getElementsByClassName("temp_photo_item_div");
-  const temp_filenames = [];
-  for (element of tempPhotoList){
-    temp_filenames.push(element.id);
+  const sidebarPhotoList = document.getElementsByClassName("sidebar_photo_item_div");
+  const sidebar_filenames = [];
+  for (element of sidebarPhotoList){
+    sidebar_filenames.push(element.id);
   }
-  // console.log("Got temp_filenames: " + temp_filenames);
+  // console.log("Got sidebar_filenames: " + sidebar_filenames);
 
   fetch("/layout", {
     method: "POST",
@@ -111,7 +111,7 @@ var save_layout = function(e) {
     },
     body: JSON.stringify({
       "gallery_photos": filenames,
-      "temp_photos": temp_filenames
+      "sidebar_photos": sidebar_filenames
     }),
   });
 }
@@ -121,7 +121,7 @@ save_button.addEventListener("click", save_layout);
 // DELETE PHOTO
 
 const delete_buttons = document.getElementsByClassName("window_close");
-const temp_delete_buttons = document.getElementsByClassName("temp_window_close");
+const sidebar_delete_buttons = document.getElementsByClassName("sidebar_window_close");
 
 var delete_func = function(e) {
   // console.log("Remove button was clicked");
@@ -141,13 +141,13 @@ var delete_func = function(e) {
           no_photos.id = "no_photos";
           document.getElementById("gallery").appendChild(no_photos);
         }
-        if(document.getElementById("temp_photos").childElementCount === 0){
+        if(document.getElementById("sidebar_photos").childElementCount === 0){
           let no_photos = document.createElement("p");
           no_photos.addEventListener("drop", drop);
           no_photos.addEventListener("dragover", allowDrop);
           no_photos.innerHTML = "Drag photos here";
-          no_photos.id = "temp_no_photos";
-          document.getElementById("temp_photos").appendChild(no_photos);
+          no_photos.id = "sidebar_no_photos";
+          document.getElementById("sidebar_photos").appendChild(no_photos);
         }
         // console.log("Photo removed from page");
         save_layout(e);
@@ -164,11 +164,29 @@ for (var i = 0; i < delete_buttons.length; i++) {
   delete_buttons[i].addEventListener("click", delete_func);
 }
 
-for (var i = 0; i < temp_delete_buttons.length; i++) {
-  temp_delete_buttons[i].addEventListener("click", delete_func);
+for (var i = 0; i < sidebar_delete_buttons.length; i++) {
+  sidebar_delete_buttons[i].addEventListener("click", delete_func);
 }
 
 // ADD PHOTOS
+
+// const upload_form = document.getElementById("upload_form");
+
+// var upload_and_save = function(e) {
+//   e.preventDefault();
+//   // console.log("Submit button clicked");
+
+//   const files = document.getElementById("input-files").files;
+
+//   fetch("/upload", {
+//     method: "POST",
+//     body: files
+//   });
+
+//   save_layout(e);
+// }
+
+// upload_form.addEventListener("submit", upload_and_save);
 
 // Adds photos to the gallery on the page
 // function addPhotosToPage(files){

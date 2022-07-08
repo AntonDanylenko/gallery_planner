@@ -8,6 +8,7 @@ var storage = new GridFsStorage({
   url: mongoConfig.serverUrl + mongoConfig.database,
   options: { useNewUrlParser: true, useUnifiedTopology: true },
   file: (req, file) => {
+    // console.log("file in upload: " + file.originalname);
     const match = ["image/png", "image/jpeg"];
     if (match.indexOf(file.mimetype) === -1) {
       const filename = `${Date.now()}-gallery-${file.originalname}`;
